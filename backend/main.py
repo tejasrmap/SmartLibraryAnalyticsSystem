@@ -13,19 +13,32 @@ models.Base.metadata.create_all(bind=engine)
 app = FastAPI(title="Smart Library Analytics API")
 
 # Configure Production CORS
-origins = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    os.getenv("FRONTEND_URL", "*"), # Allow explicit Vercel URL or wildcard
-]
+frontend_url = os.getenv("FRONTEND_URL")
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+if frontend_url and frontend_url != "*":
+    origins = [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        frontend_url,
+    ]
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+else:
+    # If no URL specified, allow ALL for initial testing
+    # Note: allow_credentials must be False when using "*"
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=False,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
 
 
 
