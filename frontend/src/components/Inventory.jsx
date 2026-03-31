@@ -10,46 +10,59 @@ const Inventory = () => {
   const [page, setPage] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newBook, setNewBook] = useState({ title: '', author: '', isbn: '', category: 'Fiction' });
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchBooks();
   }, [page, searchTerm]);
 
-  const fetchBooks = () => {
+  const fetchBooks = async () => {
     setLoading(true);
-    api.getBooksPaginated(page * 10, 10, searchTerm)
-      .then(res => {
-        setBooks(res.data.items);
-        setTotal(res.data.total);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error(err);
-        setLoading(false);
-      });
+    setError(null);
+    try {
+      const res = await api.getBooksPaginated(page * 10, 10, searchTerm);
+      setBooks(res.data.items || []);
+      setTotal(res.data.total || 0);
+    } catch (err) {
+      console.error("Resource fetch failure:", err);
+      setError("Unable to synchronize with the Resource Registry. Connection lost.");
+      setBooks([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleAddBook = (e) => {
+  const handleAddBook = async (e) => {
     e.preventDefault();
-    api.createBook(newBook)
-      .then(() => {
-        setIsModalOpen(false);
-        setNewBook({ title: '', author: '', isbn: '', category: 'Fiction' });
-        fetchBooks();
-      })
-      .catch(console.error);
+    try {
+      await api.createBook(newBook);
+      setIsModalOpen(false);
+      setNewBook({ title: '', author: '', isbn: '', category: 'Fiction' });
+      fetchBooks();
+    } catch (err) {
+      console.error(err);
+      alert("Terminal Failure: Unable to register new resource.");
+    }
   };
 
-  const handleDeleteBook = (id) => {
+  const handleDeleteBook = async (id) => {
     if (window.confirm("Are you sure you want to decommission this resource?")) {
-      api.deleteBook(id).then(fetchBooks).catch(console.error);
+      try {
+        await api.deleteBook(id);
+        fetchBooks();
+      } catch (err) {
+        console.error(err);
+        alert("Authorization Failure: Unable to decommission resource.");
+      }
     }
   };
 
   const handleExportCSV = () => {
+    if (!books || books.length === 0) return alert("No active records available for export.");
     const headers = ['Title', 'Author', 'ISBN', 'Category', 'Status', 'Record Date'];
     const rows = books.map(b => [b.title, b.author, b.isbn, b.category, b.status, b.added_date]);
     let csvContent = "data:text/csv;charset=utf-8," + headers.join(",") + "\n" + rows.map(r => r.join(",")).join("\n");
+
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);

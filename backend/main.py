@@ -6,21 +6,28 @@ from typing import List
 import models, schemas, database
 from database import engine, get_db
 from sqlalchemy import func
+import os
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Smart Library Analytics API")
 
+# Configure Production CORS
+origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    os.getenv("FRONTEND_URL", "*"), # Allow explicit Vercel URL or wildcard
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-    ],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
 
 
 @app.get("/")

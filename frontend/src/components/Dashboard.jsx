@@ -10,9 +10,11 @@ const Dashboard = ({ setActiveTab }) => {
   const [data, setData] = useState(null);
   const [recentLogs, setRecentLogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const fetchData = async () => {
     setLoading(true);
+    setError(null);
     try {
       const [summaryRes, logsRes] = await Promise.all([
         api.getSummary(),
@@ -22,6 +24,7 @@ const Dashboard = ({ setActiveTab }) => {
       setRecentLogs(logsRes.data);
     } catch (err) {
       console.error("Data synchronization failure:", err);
+      setError("Unable to establish connection with the Intelligence Sector. Please verify backend status.");
     } finally {
       setLoading(false);
     }
@@ -35,15 +38,29 @@ const Dashboard = ({ setActiveTab }) => {
 
   if (loading) return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh', color: 'var(--text-muted)' }}>Synchronizing Athena OS Intelligence...</div>;
 
+  if (error || !data) {
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '60vh', gap: '24px' }}>
+            <div className="bento-card" style={{ textAlign: 'center', maxWidth: '500px', border: '1px solid var(--danger)' }}>
+                <AlertCircle size={48} color="var(--danger)" style={{ marginBottom: '16px' }} />
+                <h1 style={{ color: 'var(--danger)' }}>Connection Failure</h1>
+                <div className="caption" style={{ marginTop: '12px' }}>{error || "The Intelligence Sector is currently offline."}</div>
+                <button className="primary-neon" style={{ marginTop: '24px' }} onClick={handleSync}>Retry Synchronization</button>
+            </div>
+        </div>
+    );
+  }
+
   const doughnutData = {
-    labels: Object.keys(data.category_distribution),
+    labels: data.category_distribution ? Object.keys(data.category_distribution) : [],
     datasets: [{
-      data: Object.values(data.category_distribution),
+      data: data.category_distribution ? Object.values(data.category_distribution) : [],
       backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#0ea5e9'],
       borderWidth: 2,
       borderColor: '#1e293b',
     }],
   };
+
 
   const lineData = {
     labels: Object.keys(data.monthly_borrowing).reverse(),
