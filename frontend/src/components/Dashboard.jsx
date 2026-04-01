@@ -147,33 +147,6 @@ const Dashboard = ({ setActiveTab }) => {
           </div>
         </div>
 
-        {/* Recent Shipments / Highlights */}
-        <div className="bento-card" style={{ gridColumn: 'span 12' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div style={{ padding: '8px', background: 'rgba(59, 130, 246, 0.1)', borderRadius: '8px', color: 'var(--accent-main)' }}>
-                        <BookOpen size={20} />
-                    </div>
-                    <h2>Recent Resource Shipments</h2>
-                </div>
-                <button className="cyber-action" style={{ fontSize: '0.8125rem' }} onClick={() => setActiveTab('inventory')}>View Full Registry</button>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '20px' }}>
-                {recentLogs.slice(0, 5).map((log) => (
-                    <div key={log.id} className="shipment-item" style={{ background: 'rgba(255,255,255,0.02)', borderRadius: '12px', padding: '16px', border: '1px solid var(--border-clean)', transition: 'all 0.3s ease' }}>
-                        <div style={{ width: '100%', aspectRatio: '2/3', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', marginBottom: '16px', overflow: 'hidden', boxShadow: '0 8px 16px rgba(0,0,0,0.3)' }}>
-                            <img 
-                                src={`https://covers.openlibrary.org/b/isbn/${Math.random() > 0.5 ? '0374157065' : '0451524934'}-M.jpg`} // Fallback for demo since some URLs might be old
-                                alt=""
-                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                            />
-                        </div>
-                        <div style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-active)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{log.book_title}</div>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>{log.member_name}</div>
-                    </div>
-                ))}
-            </div>
-        </div>
 
         {/* System Event Log */}
         <div className="bento-card" style={{ gridColumn: 'span 12' }}>
