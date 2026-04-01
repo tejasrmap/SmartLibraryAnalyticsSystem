@@ -11,13 +11,13 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
 
   return (
     <div className="sidebar-minimal">
-      {/* High-Contrast Athena OS Identity */}
+      {/* High-Contrast Booklytics Brand Identity */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '48px', paddingLeft: '4px' }}>
         <div style={{ background: 'var(--accent-main)', borderRadius: '8px', padding: '6px', display: 'flex', boxShadow: '0 0 20px rgba(59, 130, 246, 0.4)' }}>
           <Library size={22} color="white" />
         </div>
         <span style={{ fontSize: '1.5rem', fontWeight: 900, letterSpacing: '-0.05em', color: 'var(--text-active)' }}>
-          Athena<span style={{ color: 'var(--accent-main)' }}>OS</span>
+          Book<span style={{ color: 'var(--accent-main)' }}>lytics</span>
         </span>
       </div>
 

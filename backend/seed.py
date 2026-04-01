@@ -74,7 +74,7 @@ def seed_data():
                 count += 1
                 
         db.commit()
-        print(f"Successfully synchronized Athena Registry with {len(books)} high-fidelity records.")
+        print(f"Successfully synchronized Booklytics Registry with {len(books)} high-fidelity records.")
         
     except Exception as e:
         print(f"Error seeding books: {e}")
@@ -88,7 +88,7 @@ def seed_data():
     for i, name in enumerate(member_names):
         member = models.Member(
             name=name,
-            email=f"{name.lower().replace(' ', '.')}@athena.edu",
+            email=f"{name.lower().replace(' ', '.')}@booklytics.com",
             phone=f"555-0{random.randint(100, 999)}"
         )
         db.add(member)

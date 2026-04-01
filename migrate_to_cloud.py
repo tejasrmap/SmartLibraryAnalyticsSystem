@@ -11,7 +11,7 @@ def migrate():
     cloud_url = sys.argv[1]
     local_db = "backend/library.db"
 
-    print(f"\n--- 🚀 Athena OS: Cloud Migration Phase ---")
+    print(f"\n--- 🚀 Booklytics: Cloud Migration Phase ---")
     print(f"Target: Railway Cloud Infrastructure")
     
     try:
@@ -61,7 +61,7 @@ def migrate():
 
         cloud_conn.commit()
         print(f"\n" + "="*40)
-        print("🏆 MIGRATION COMPLETE: Athena OS is now fully cloud-integrated!")
+        print("🏆 MIGRATION COMPLETE: Booklytics is now fully cloud-integrated!")
         print("="*40)
 
     except Exception as e:

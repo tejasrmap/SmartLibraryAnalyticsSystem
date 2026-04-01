@@ -24,17 +24,17 @@ const Members = () => {
         m.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    if (loading) return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh', color: 'var(--text-muted)' }}>Synchronizing Community Nexus...</div>;
+    if (loading) return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh', color: 'var(--text-muted)' }}>Synchronizing Member Directory...</div>;
 
     return (
         <div>
             <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
                 <div>
-                    <h1 style={{ marginBottom: '8px' }}>Community Nexus</h1>
+                    <h1 style={{ marginBottom: '8px' }}>Member Directory</h1>
                     <div className="caption">High-fidelity profile management and circulation tracking.</div>
                 </div>
                 <button className="primary-neon">
-                    <UserPlus size={18} /> Register New Sentinel
+                    <UserPlus size={18} /> Register Member
                 </button>
             </header>
 
@@ -65,7 +65,7 @@ const Members = () => {
                         <h2 style={{ marginBottom: '4px' }}>{member.name}</h2>
                         <div className="caption" style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                             <ShieldCheck size={14} color="var(--success)" />
-                            Active Sentinel
+                            Active Member
                         </div>
 
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>

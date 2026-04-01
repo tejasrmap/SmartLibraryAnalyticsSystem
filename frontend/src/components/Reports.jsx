@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import api from '../api';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, Title, Filler } from 'chart.js';
+import { Line, Bar } from 'react-chartjs-2';
 import { BarChart, LineChart, PieChart, Download, FileText, TrendingUp, AlertTriangle, CheckCircle2 } from 'lucide-react';
+
+ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, Title, Filler);
 
 const Reports = () => {
     const [summary, setSummary] = useState(null);
@@ -19,6 +23,49 @@ const Reports = () => {
     }, []);
 
     if (loading) return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh', color: 'var(--text-muted)' }}>Synchronizing Intelligence Lab...</div>;
+
+    const trendData = {
+        labels: summary.monthly_borrowing ? Object.keys(summary.monthly_borrowing).reverse() : [],
+        datasets: [{
+            label: 'Borrowing Capacity',
+            data: summary.monthly_borrowing ? Object.values(summary.monthly_borrowing).reverse() : [],
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            fill: true,
+            tension: 0.4,
+            pointRadius: 5,
+            pointHoverRadius: 8,
+            pointBackgroundColor: '#3b82f6',
+        }],
+    };
+
+    const trendOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                backgroundColor: '#1e293b',
+                titleColor: '#ffffff',
+                bodyColor: '#cbd5e1',
+                borderColor: 'rgba(255,255,255,0.1)',
+                borderWidth: 1,
+                padding: 12,
+                displayColors: false
+            }
+        },
+        scales: {
+            y: { 
+                beginAtZero: true, 
+                grid: { color: 'rgba(255,255,255,0.05)' }, 
+                ticks: { color: '#94a3b8', font: { size: 11, weight: 600 } } 
+            },
+            x: { 
+                grid: { display: false }, 
+                ticks: { color: '#94a3b8', font: { size: 11, weight: 600 } } 
+            }
+        }
+    };
 
     return (
         <div>
@@ -86,8 +133,8 @@ const Reports = () => {
                             <h2>Projected Borrowing Trends</h2>
                         </div>
                     </div>
-                    <div style={{ height: '320px', background: 'rgba(255,255,255,0.01)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px dashed var(--border-clean)' }}>
-                        <span className="caption">Advanced Neural Graphics Integration Active...</span>
+                    <div style={{ height: '320px' }}>
+                        <Line data={trendData} options={trendOptions} />
                     </div>
                 </div>
 

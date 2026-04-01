@@ -36,7 +36,7 @@ const Dashboard = ({ setActiveTab }) => {
 
   const handleSync = () => fetchData();
 
-  if (loading) return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh', color: 'var(--text-muted)' }}>Synchronizing Athena OS Intelligence...</div>;
+  if (loading) return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh', color: 'var(--text-muted)' }}>Synchronizing Booklytics Intelligence...</div>;
 
   if (error || !data) {
     return (

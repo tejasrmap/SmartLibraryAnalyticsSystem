@@ -10,7 +10,7 @@ import os
 
 models.Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="Smart Library Analytics API")
+app = FastAPI(title="Booklytics Intelligence API")
 
 # Configure Production CORS
 frontend_url = os.getenv("FRONTEND_URL")
@@ -45,7 +45,7 @@ else:
 
 @app.get("/")
 def read_root():
-    return {"message": "Smart Library Analytics System API"}
+    return {"message": "Booklytics Intelligence System API"}
 
 # --- Books ---
 @app.get("/books", response_model=List[schemas.Book])
