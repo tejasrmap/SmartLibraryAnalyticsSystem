@@ -19,6 +19,7 @@ if frontend_url and frontend_url != "*":
     origins = [
         "http://localhost:5173",
         "http://127.0.0.1:5173",
+        "https://booklytics-ten.vercel.app",
         frontend_url,
     ]
     app.add_middleware(
