@@ -45,7 +45,11 @@ else:
 
 @app.get("/")
 def read_root():
-    return {"message": "Booklytics Intelligence System API"}
+    return {"message": "Booklytics Intelligence System API", "status": "operational"}
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy", "service": "Booklytics Backend"}
 
 # --- Books ---
 @app.get("/books", response_model=List[schemas.Book])
